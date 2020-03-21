@@ -1,0 +1,187 @@
+written in Japanese.
+
+================================================================================
+        Programmer Memory Map
+      +---------+-------+-------+--------------------+
+      | Address | Size  | Flags | Description        |
+      +---------+-------+-------+--------------------+
+      | $0000   | $1000 | C     | Pattern Table #0   |
+      | $1000   | $1000 | C     | Pattern Table #1   |
+      | $2000   | $3C0  |       | Name Table #0      |
+      | $23C0   | $40   |  N    | Attribute Table #0 |
+      | $2400   | $3C0  |  N    | Name Table #1      |
+      | $27C0   | $40   |  N    | Attribute Table #1 |
+      | $2800   | $3C0  |  N    | Name Table #2      |
+      | $2BC0   | $40   |  N    | Attribute Table #2 |
+      | $2C00   | $3C0  |  N    | Name Table #3      |
+      | $2FC0   | $40   |  N    | Attribute Table #3 |
+      | $3000   | $F00  |   R   |                    |
+      | $3F00   | $10   |       | Image Palette #1   |
+      | $3F10   | $10   |       | Sprite Palette #1  |
+      | $3F20   | $E0   |    P  |                    |
+      | $4000   | $C000 |     F |                    |
+      +---------+-------+-------+--------------------+
+                          C = Possibly CHR-ROM
+                          N = Mirrored (see Subsection G)
+                          P = Mirrored (see Subsection H)
+                          R = Mirror of $2000-2EFF (VRAM)
+                          F = Mirror of $0000-3FFF (VRAM)
+
+
+================================================================================
+name table size = 0x3c0
+attr table size = 0x040  == 64
+---------------------------
+bath table size = 0x400
+
+
+tile_x: 0x0 〜 0x1f
+tile_y: (0x0 >> 5) 〜 (0x3e0 >> 5) 
+      = 0x0 〜 0x1f
+
+
+name_addr = (loopy_v & 0xfff) 
+0x3ff 部分は tile_x + tile_y * 32 で妥当。 (tile_y は 30 を越えることは無いであろうので、name table size におさまるであろう)。 
+0xc00 部分は bank (0x03 相当)。 
+
+bank switch は bank ^= 0x1 のみ。 
+
+
+name_addr の使い道は VRAM(name_addr)
+
+#define VRAM(addr) \
+  PPU_VRAM_banks[(addr) >> 10][(addr) & 0x3FF]
+
+
+addr:   
+  01234567 01234567 01234567 01234567 
+                          98 7654321
+                          03       ff
+
+================================================================================
+  E. Attribute Tables
+  -------------------
+    Each byte in an Attribute Table represents a 4x4 group of tiles on the
+    screen. There's multiple ways to describe what the function of one (1)
+    byte in the Attribute Table is:
+
+      * Holds the upper two (2) bits of a 32x32 pixel grid, per 16x16 pixels.
+      * Holds the upper two (2) bits of sixteen (16) 8x8 tiles.
+      * Holds the upper two (2) bits of four (4) 4x4 tile grids.
+
+    It's quite confusing; two graphical diagrams may help:
+
+      +------------+------------+
+      |  Square 0  |  Square 1  |  #0-F represents an 8x8 tile
+      |   #0  #1   |   #4  #5   |
+      |   #2  #3   |   #6  #7   |  Square [x] represents four (4) 8x8 tiles
+      +------------+------------+   (i.e. a 16x16 pixel grid)
+      |  Square 2  |  Square 3  |
+      |   #8  #9   |   #C  #D   |
+      |   #A  #B   |   #E  #F   |
+      +------------+------------+
+
+    The actual format of the attribute byte is the following (and corris-
+    ponds to the above example):
+
+       Attribute Byte
+         (Square #)
+      ----------------
+          33221100
+          ||||||+--- Upper two (2) colour bits for Square 0 (Tiles #0,1,2,3)
+          ||||+----- Upper two (2) colour bits for Square 1 (Tiles #4,5,6,7)
+          ||+------- Upper two (2) colour bits for Square 2 (Tiles #8,9,A,B)
+          +--------- Upper two (2) colour bits for Square 3 (Tiles #C,D,E,F)
+
+
+================================================================================
+attribute table 
+
+1byte で 4x4 tile == 32x32 pixel を表現。 一列分の attr は 8byte. 
+
+32x30 tile の screen を 4x4 tile で区切り、 address が決まる。 
+
+(tile_y / 4) * (32 / 4) + (tile_x / 4) カナ? 
+
+= ((tile_y >> 2) << 3) + (tile_x >> 2)
+= ((tile_y & 0x1c) << 1) + (tile_x >> 2)
+
+address 内の bit の決め方は…
+  ○ 4x4 の中を 2x2 で区切り bit を決める。 
+
+(tile_y & 0x2) | ((tile_x & 0x2) >> 1)  ... 0〜3 as Square0〜3
+
+shift にするには… x2 して 6 から引く。 
+
+
+0x1000
+== 0001.0000 0000.0000
+           8          
+
+0x7000 (tile_y_bit)
+== 0111.0000 0000.0000
+           8
+
+
+(PPU_VRAM_banks[name_bank][name_addr] << 4)
+0xff << 4
+== 0000.1111 1111.0000
+           8
+
+
+>>10 ... 
+
+
+============================================================
+もっとも右側が描かれるとき
+
+loopy_x = 0
+
+この時、
+
+SIDE_MARGIN + 8 * 33 = 272 だけ書き込み…
+
+display は 
+
+SIDE_MARGIN + 256 + SIDE_MARGIN
+8 + 256 + 8 = 272 だけ書き込み…
+
+
+================================================================================
+bank switch
+
+0x8000 = 32768
+
+------------------------------------------------------------
+  VROM_mask = 0xFFFF;
+
+  for(probe = 0x8000; probe; probe >>= 1)
+  {
+    if((num_1k_VROM_banks-1) & probe) break;
+    VROM_mask >>= 1;
+  }
+------------------------------------------------------------
+
+
+probe = 0x8000
+        0x4000
+        0x2000
+        0x1000
+           ...
+        0x0001
+
+
+VROM_mask = 0xffff
+            0x7fff
+            0x3fff
+            0x1fff
+               ...
+            0x0001
+
+
+"fire emblem" で num_1k_VROM_banks = 128 
+                        VROM_mask  = 0x7f
+
+0x7f == num_1k_VROM_banks - 1;
+
+おそらく num_1k_VROM_banks -1 == VROM_mask

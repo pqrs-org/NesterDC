@@ -1,0 +1,61 @@
+diff -ur /home/tekezo/work/src/orig/kos-1.1.8/Makefile kos-1.1.8/Makefile
+--- /home/tekezo/work/src/orig/kos-1.1.8/Makefile	Tue Jul 30 10:27:15 2002
++++ kos-1.1.8/Makefile	Sun Oct  6 04:30:38 2002
+@@ -5,7 +5,7 @@
+ #   
+ # kos-1.1.8-diff,v 1.1.2.2 2002/10/09 13:57:55 tekezo Exp
+ 
+-all: build-utils build-libc build-libm build-libk++ build-kernel build-addons build-examples
++all: build-utils build-libc build-libm build-libk++ build-kernel 
+ 
+ clean:
+ 	-rm -f lib/*
+@@ -14,8 +14,6 @@
+ 	$(KOS_MAKE) -C libm clean
+ 	$(KOS_MAKE) -C libk++ clean
+ 	$(KOS_MAKE) -C kernel clean
+-	$(KOS_MAKE) -C addons clean
+-	$(KOS_MAKE) -C examples clean
+ 
+ build-utils:
+ 	$(KOS_MAKE) -C utils
+Only in /home/tekezo/work/src/orig/kos-1.1.8: examples
+diff -ur /home/tekezo/work/src/orig/kos-1.1.8/kernel/arch/dreamcast/hardware/maple/maple_utils.c kos-1.1.8/kernel/arch/dreamcast/hardware/maple/maple_utils.c
+--- /home/tekezo/work/src/orig/kos-1.1.8/kernel/arch/dreamcast/hardware/maple/maple_utils.c	Tue Jul 30 10:27:05 2002
++++ kos-1.1.8/kernel/arch/dreamcast/hardware/maple/maple_utils.c	Sun Oct  6 04:35:04 2002
+@@ -141,6 +141,7 @@
+ 
+ /* Determine if a given device is valid */
+ int maple_dev_valid(int p, int u) {
++	if (p < 0 || u < 0) return 0;
+ 	return maple_state.ports[p].units[u].valid;
+ }
+ 
+diff -ur /home/tekezo/work/src/orig/kos-1.1.8/kernel/arch/dreamcast/kernel/mm.c kos-1.1.8/kernel/arch/dreamcast/kernel/mm.c
+--- /home/tekezo/work/src/orig/kos-1.1.8/kernel/arch/dreamcast/kernel/mm.c	Tue Jul 30 10:27:05 2002
++++ kos-1.1.8/kernel/arch/dreamcast/kernel/mm.c	Sun Oct  6 04:35:36 2002
+@@ -42,7 +42,7 @@
+ 		increment = (increment + 4) & ~3;
+ 	sbrk_base += increment;
+ 
+-	if ( ((uint32)sbrk_base) >= (0x8d000000 - 65536) ) {
++	if ( ((uint32)sbrk_base) >= (0x8d000000 - 4 * 1024 * 1024) ) {
+ 		panic("out of memory; about to run over kernel stack");
+ 	}
+ 	
+diff -ur /home/tekezo/work/src/orig/kos-1.1.8/kernel/arch/dreamcast/kernel/panic.c kos-1.1.8/kernel/arch/dreamcast/kernel/panic.c
+--- /home/tekezo/work/src/orig/kos-1.1.8/kernel/arch/dreamcast/kernel/panic.c	Tue Jul 30 10:27:06 2002
++++ kos-1.1.8/kernel/arch/dreamcast/kernel/panic.c	Wed Oct  9 00:40:20 2002
+@@ -15,6 +15,11 @@
+    kernels which ought to be avoided if at all possible. */
+ void panic(const char *msg) {
+ 	printf("kernel panic: %s\r\n", msg);
++#if 1
++        vid_set_start(0);
++        bfont_draw_str(vram_s + 640 * 24, 640, 1, msg);
++        timer_spin_sleep(2000);
++#endif
+ 	arch_abort();
+ }
+ 
+Only in kos-1.1.8/libc/include/sys: param.h

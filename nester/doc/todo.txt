@@ -1,0 +1,22 @@
+incorporate unofficial nester stuff
+get jumptable cpu core to compile
+clean up src code
+work on timing
+  cobra triangle has a garbage line on title screen
+  smb3 jitters
+smoother fullscreen/windowed transition
+resync to vsync
+make sure shortcuts don't mess up fullscreen
+make sure only valid video cards are listed - DirectDrawEnumerateEx
+problem with controls (Mad Max)
+zapper support
+fullscreen garbage in DX5,6,7 (3?)
+DDCAPS2_FLIPNOVSYNC, DDFLIP_NOVSYNC
+optimize double size
+make sure all vid writes are aligned
+check for mem leaks
+check dialog tab order
+netplay
+DDSCL_NOWINDOWCHANGES weirdness
+< 60hz
+windowed DirectDraw

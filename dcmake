@@ -1,0 +1,120 @@
+#!/bin/sh
+
+#============================================================
+# Edit for your environment
+export NDC_BASE=/home/tekezo/work/tmp/nesterdc-7.1
+export CROSS_BASE=/home/const/cross/dreamcast
+
+#NESTER_OPTIONS="${NESTER_OPTIONS} -D__DC_PAL__" 
+
+SH_TARGET_ARCH="-ml -m4-single-only"
+SH_TARGET_ARCH="${SH_TARGET_ARCH} -D__DREAMCAST__ -DBZ_NO_STDIO -D_arch_dreamcast"
+SH_TARGET=sh-elf
+
+SH_CFLAGS="${SH_TARGET_ARCH}"
+#SH_CFLAGS="${SH_CFLAGS} -Wall -W -Winline -Wcast-align -Wshadow"
+#SH_CFLAGS="${SH_CFLAGS} -Wno-unused"
+SH_CFLAGS="${SH_CFLAGS} -O3"
+SH_CFLAGS="${SH_CFLAGS} -fomit-frame-pointer"
+SH_CFLAGS="${SH_CFLAGS} -fno-exceptions"
+#SH_CFLAGS="${SH_CFLAGS} -fno-builtin"
+#SH_CFLAGS="${SH_CFLAGS} -fno-strict-aliasing"
+SH_CXXFLAGS="${SH_CFLAGS} -fno-operator-names -fno-rtti"
+
+# for debug
+#SH_CFLAGS="${SH_CFLAGS} -fno-common"
+
+ARM_TARGET_ARCH="-mcpu=arm7 -D__DREAMCAST__"
+ARM_TARGET=arm-elf
+
+ARM_CFLAGS="${ARM_TARGET_ARCH} -Wall -O3"
+
+
+#============================================================
+# You don't have to edit below. 
+
+#------------------------------------------------------------
+# KallistiOS environment variable settings
+
+# Build architecture
+export KOS_ARCH="dreamcast"
+
+# KOS base paths
+export KOS_BASE="${NDC_BASE}/kos-1.1.8"
+KOS_INCS="${KOS_BASE}/include"
+KOS_INCS="${KOS_INCS} -I${KOS_BASE}/libc/include"
+KOS_INCS="${KOS_INCS} -I${KOS_BASE}/kernel/arch/dreamcast/include"
+export KOS_INCS
+
+# Make utility
+export KOS_MAKE="gmake"
+
+# Load utility
+export KOS_LOADER="${KOS_BASE}/utils/ipload/ipload.py"
+
+# Genromfs utility
+export KOS_GENROMFS="${KOS_BASE}/utils/genromfs/genromfs"
+
+# SH-4 GCC paths
+export KOS_CC_BASE=${CROSS_BASE}
+export KOS_CC="${KOS_CC_BASE}/bin/${SH_TARGET}-gcc"
+export KOS_CCPLUS="${KOS_CC_BASE}/bin/${SH_TARGET}-g++"
+export KOS_AS="${KOS_CC_BASE}/bin/${SH_TARGET}-as"
+export KOS_AR="${KOS_CC_BASE}/bin/${SH_TARGET}-ar"
+export KOS_OBJCOPY="${KOS_CC_BASE}/bin/${SH_TARGET}-objcopy"
+export KOS_OBJDUMP="${KOS_CC_BASE}/bin/${SH_TARGET}-objdump"
+export KOS_LD="${KOS_CC_BASE}/bin/${SH_TARGET}-ld"
+export KOS_RANLIB="${KOS_CC_BASE}/bin/${SH_TARGET}-ranlib"
+export KOS_STRIP="${KOS_CC_BASE}/bin/${SH_TARGET}-strip"
+export KOS_CFLAGS="${SH_CFLAGS} -O2"
+export KOS_CPPFLAGS="${SH_CXXFLAGS}"
+export KOS_AFLAGS="-little"
+export KOS_LDFLAGS="${SH_TARGET_ARCH} -nostartfiles -nostdlib -Wl,-Tdreamcast.x"
+
+# ARM7 GCC paths
+export DC_ARM7BASE=${CROSS_BASE}
+export DC_ARM7CC="${DC_ARM7BASE}/bin/${ARM_TARGET}-gcc"
+export DC_ARM7AS="${DC_ARM7BASE}/bin/${ARM_TARGET}-as"
+export DC_ARM7AR="${DC_ARM7BASE}/bin/${ARM_TARGET}-ar"
+export DC_ARM7OBJCOPY="${DC_ARM7BASE}/bin/${ARM_TARGET}-objcopy"
+export DC_ARM7LD="${DC_ARM7BASE}/bin/${ARM_TARGET}-ld"
+export DC_ARM7CFLAGS="${ARM_CFLAGS}"
+export DC_ARM7AFLAGS="-marm7"
+
+#------------------------------------------------------------
+# for bzip2
+export BZ_CC="${KOS_CC}"
+export BZ_AR="${KOS_AR}"
+export BZ_RANLIB="${KOS_RANLIB}"
+export BZ_BASE="${NDC_BASE}/bzip2-1.0.1"
+export BZ_CFLAGS="${SH_CFLAGS} -I${KOS_INCS}"
+
+#------------------------------------------------------------
+# for Nester
+export NESTER_BASE="${NDC_BASE}/nester"
+export NESTER_OBJ="${NESTER_BASE}/obj-dreamcast"
+export NESTER_CC="${KOS_CC}"
+NESTER_INCS="-I${KOS_INCS}"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/debug"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes/ppu"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes/apu"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes/cpu"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes/external_device"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes/libsnss"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes/mapper"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes/ppu"
+NESTER_INCS="${NESTER_INCS} -I${BZ_BASE}"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/dreamcast"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/dreamcast/menu_common"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/dreamcast/menu_nesterdc"
+export NESTER_CFLAGS="${SH_CFLAGS} ${NESTER_INCS} ${NESTER_OPTIONS}"
+export NESTER_CCPLUS="${KOS_CCPLUS}"
+export NESTER_CXXFLAGS="${NESTER_CFLAGS} ${SH_CXXFLAGS}"
+
+
+#------------------------------------------------------------
+${KOS_MAKE} "$@"
+
+

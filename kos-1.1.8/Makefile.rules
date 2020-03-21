@@ -1,0 +1,49 @@
+# KallistiOS 1.1.8
+#
+# Makefile.rules
+# (c)2000-2001 Dan Potter
+#   
+# Makefile.rules,v 1.1.1.1 2002/10/09 13:59:14 tekezo Exp
+
+
+# Global KallistiOS Makefile include
+
+KOS_ALL_INCS := -I$(KOS_INCS) -I$(KOS_BASE)/libc/include \
+	-I$(KOS_BASE)/kernel/arch/$(KOS_ARCH)/include
+
+ifndef KOS_LIBS
+	KOS_LIBS := -lkallisti -lgcc
+	KOS_LDFLAGS := $(KOS_LDFLAGS) -L$(KOS_BASE)/lib
+endif
+
+# Build rules
+%.o: %.c
+	$(KOS_CC) $(KOS_CFLAGS) $(KOS_LOCAL_CFLAGS) -D_arch_$(KOS_ARCH) $(KOS_ALL_INCS) -c $< -o $@
+
+%.o: %.cc
+	$(KOS_CCPLUS) $(KOS_CFLAGS) $(KOS_LOCAL_CFLAGS) -D_arch_$(KOS_ARCH) $(KOS_CPPFLAGS) $(KOS_ALL_INCS) -c $< -o $@
+
+%.o: %.cpp
+	$(KOS_CCPLUS) $(KOS_CFLAGS) $(KOS_LOCAL_CFLAGS) -D_arch_$(KOS_ARCH) $(KOS_CPPFLAGS) $(KOS_ALL_INCS) -c $< -o $@
+
+%.o: %.s
+	$(KOS_AS) $(KOS_AFLAGS) $< -o $@
+
+%.o: %.S
+	$(KOS_AS) $(KOS_AFLAGS) $< -o $@
+
+subdirs: $(patsubst %, _dir_%, $(SUBDIRS))
+
+$(patsubst %, _dir_%, $(SUBDIRS)):
+	$(MAKE) -C $(patsubst _dir_%, %, $@)
+
+clean_subdirs: $(patsubst %, _clean_dir_%, $(SUBDIRS))
+
+$(patsubst %, _clean_dir_%, $(SUBDIRS)):
+	$(MAKE) -C $(patsubst _clean_dir_%, %, $@) clean
+
+
+# Some extra variables
+KOS_ARCH_DIR = $(KOS_BASE)/kernel/arch/$(KOS_ARCH)
+KOS_START = $(KOS_ARCH_DIR)/kernel/startup.o
+

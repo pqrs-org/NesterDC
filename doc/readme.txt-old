@@ -1,0 +1,230 @@
+-----------------------------------------------------------------
+NesterDC	
+by Ken Friece
+http://nesterdc.emulation64.com/
+
+NesterDC is a port of nester (a NES emulator) for the Dreamcast 
+console. It was developed using Libdream.
+
+-----------------------------------------------------------------
+Version 3
+06-03-2001
+
+New Features:
+- The sound is close to 100% perfect.
+- The game menu selection screen has been improved, but there is now a 
+  limit of 2048 (with a 128 character limit per name) roms per cd.
+- The menu's look much better now, thanks to the artwork of Dave 
+  Arnold, who is also the webmaster of http://nesterdc.emulation64.com/
+- Version 3 is noticably faster than Version 2.
+- There are new frame skip options.
+- If a game exists in the GAMES directory called GAME.NES, NesterDC 
+  will skip all intro menu's and run that game. This will lead to 
+  single game cd's that feel more like a real NES.
+- The source code has been released.
+
+-----------------------------------------------------------------
+Version 2
+03-13-2001
+
+New Features:
+- The sound is much better, but still not 100% perfect.
+- Exit from a game to the main menu.
+- Save game SaveRAM to a vmu.
+- Save user settings to a vmu.
+- Mapper 24 support from nester public beta 4. 
+
+-----------------------------------------------------------------			
+Version 1			
+02-20-2001
+Initial Release
+
+-----------------------------------------------------------------
+Features:	
+	- good speed
+	- 2 player support
+	- Sound
+	- good mapper compatibility 
+        - save support
+
+-----------------------------------------------------------------
+Burning instructions:
+    	- the following website offers excellent burning 
+      		instructions. If you follow these instructions, 
+		simply place games in the /GAMES directory and 
+		burn the image. 
+		http://mc.pp.se/dc/cdr.html
+		I created a copy_script.txt. This may help some
+		peole burn the BIN images.
+
+        *** Important: If you downloaded the bin files, you 
+            MUST follow the instructions above to burn NesterDC.
+            This involves doing the steps in the copy_script.txt. 
+	    You cannot simply burn the files to a cd using Easy 
+	    CD creator. It's just not that easy.*** 
+	
+    	- there will also be diskjuggler images available for 
+		download. These images will require another CD 
+		with games placed in a /GAMES directory. When 
+		using a seperate games cd, wait until the emulator
+		loads the main menu before putting in the GAMES 
+		cd. The diskjuggler image was created with verion
+		2.00.419. 
+
+	- Things to try if the diskjuggler burn doesn't work.
+		1.) A different version of diskjuggler (I have heard 
+		    that some versions are not compatible with each 
+		    other).
+		2.) Burn at 1x.
+		3.) Look for a different format image. Some burners 
+		    don't get along well with diskjuggler.
+
+NOTE: People that are not familiar with linux should use the disk 
+juggler image. I have also seen Nero images floating around the 
+web. You need a seperate games cd, but these are much easier for 
+newbies to burn.
+
+-----------------------------------------------------------------
+Controller settings:
+     	- NES DPAD	= DC DPAD
+     	- NES start  	= DC start
+     	- NES select 	= DC Y
+     	- NES A 	= DC A or DC B
+     	- NES B      	= DC X or DC A
+
+	- Press the right and left triggers at the same time to 
+	  exit from a game to the main menu.
+
+-----------------------------------------------------------------
+Options:
+	- Frame skip : 	Range 0-4. 
+				0 - display every frame
+			        1 - display 2 frames, skip 1 frame
+			      * 2 - display every other frame
+				3 - display 2 frames, skip 2 frames
+				4 - display 1 frame, skip 2 frames 
+	- Adjust NES A and B Buttons.
+			      *	[NES_B = DC_X] [NES_A = DC_A]
+				[NES_B = DC_A] [NES_A = DC_B]
+				[NES_B = DC_X] [NES_A = DC_B]
+	- Toggle Sound 
+			      	[OFF]
+			      * [ON]
+	- Toggle 1 / 2 Player Mode
+			      *	1 Player 
+				2 Players
+	- Toggle Save Support
+			      * [OFF]
+				[ON]
+	Note: The default option has a * before it.
+
+-----------------------------------------------------------------
+Notes on GAME.NES
+	1.) If a game exists in the GAMES directory of NesterDC called 
+            GAME.NES, NesterDC will skip all intro menu's and run that 
+	    game. This will lead to single game cd's that feel more 
+ 	    like a real NES.
+	Limitations:
+	1.) Saving. NesterDC cannot differentiate between two different
+	    games that are both named GAME.NES. It will save one just 
+	    fine, but beware when mixing saves from different GAME.NES 
+	    games. An easy way around this problem is to remove your
+	    memory card for games that don't need to be saved. I am 
+	    looking into other ways to implement saving with GAME.NES.
+
+-----------------------------------------------------------------
+Notes on saving:
+	1.) Enable saving at your own risk. This was tested with 
+	    Sega vmu's. It may work with other memory cards, but 
+	    I don't know that for sure. Do not try to use memory 
+	    cards with your good saves on them! I don't want to 
+	    have anyone email me and say their Phantasy Star save
+	    was erased by NesterDC. I coded defensively, but I 
+	    had limited time to test. You have been warned...
+        2.) Only the memory card in the first controller is used.
+	3.) Each game save takes up 18 blocks. The user settings 
+	    save takes up 2 blocks.
+	4.) When the save option is on, user settings will be 
+	    saved to the vmu and loaded the next time NesterDC
+      	    is started.
+	5.) Game saves occur when the save option is on, and the 
+	    user exits a game to the main menu. The save will 
+	    load the next time the game is selected.
+	6.) Some games that don't have SaveRAM are being saved. 
+	    I am not sure how to fix this, and it is better than 
+	    the alternative (not saving some games with SaveRAM).
+	    It would be wise to turn save support off when playing
+	    a lot of different games that don't need to be saved.
+	7.) The time is incorrect when viewing the save in memory
+	    card manager. It shows 09/13/2036 19:24. I would rather 
+	    add in other features than spend effort on getting the 
+	    time correct here. It isn't hurting anything.
+	8.) There is no picture for the save in the memory card 
+	    manager. 
+	9.) I plan on adding the ability to save any game at any 
+	    time in the next version.
+
+-----------------------------------------------------------------
+Possible future improvements:
+   
+     	- improved compatibility.
+     	- faster.
+	- SNSS save support.
+
+-----------------------------------------------------------------
+I would like to thank the following people for their great work:
+
+Darren Ranalli 	-- The author of nester.
+Mathew Conte    -- The author of fast NES6502 and NES APU C cores.
+Dan Potter 	-- The author of libdream.
+Jordan DeLong 	-- The author of libdream.
+Marcus Comstedt -- Lots of info on the Dreamcast, and many 
+		   incredibly useful programs.
+Groepaz/Hitmen 	-- A SH4 GCC setup guide.
+tubooboo 	-- A C++ SH4 GCC setup guide. 
+Jules		-- A development site that has all of the latest 
+		   development tools.
+David Arnold    -- For his work on NesterDC menu's, and the website.
+dcdev board     -- For currently being so active. There is a lot 
+ 		   of great info being exchanged on the board, and 
+		   the quality of homebrew programs is increasing 
+		   rapidly because of it.
+everyone who 
+worked on the 
+dc_tonic cd     -- I was blown away when I saw the work you
+		   guys did. Very cool... 
+
+A special thanks goes out to Marcus Comstedt and Christopher Van 
+Beek for giving me some sound pointers.
+
+-----------------------------------------------------------------
+Recommended Dreamcast / NES development sites:
+
+http://nester.dranalli.com/
+http://nesdev.parodius.com/
+http://mc.pp.se/dc/index.html
+http://dcdev.allusion.net/
+http://www.ngine.de/
+http://www.inode.at/hitmen/hitdc/index.html
+http://www.julesdcdev.com/
+http://groups.yahoo.com/group/dcdev/
+
+-----------------------------------------------------------------
+"Sega" and "Dreamcast" are registered trademarks of Sega Enterprises, Ltd.
+
+"Nintendo" , "Nintendo Entertainment System", and "NES" are registered 
+trademarks of Nintendo of America. 
+
+Use this software at your own risk. I am not responsible for any 
+damage or loss caused by the use of this software.
+
+-----------------------------------------------------------------
+If you have a question about burning or other things, please make 
+an effort to find the answer before emailing me. I don't mind 
+answering questions, but the "how do I change directories in cygwin"
+types of questions are getting old.
+
+contact info: nesterdc@yahoo.com
+
+-----------------------------------------------------------------
+The Dreamcast won't die anytime soon...

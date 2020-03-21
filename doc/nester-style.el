@@ -1,0 +1,23 @@
+(load "cc-styles.el")
+(setq c-style-alist (cons '("nester"
+                            (c-basic-offset . 2)
+                            (c-comment-only-line-offset . 0)
+                            (c-offsets-alist . ((statement-block-intro . +)
+                                                (substatement-open . 0)
+                                                (label . 0)
+                                                (statement-cont . 0)
+                                                (case-label . +)
+                                                (inline-open . 0)
+                                                )))
+                          c-style-alist))
+
+(setq c-style-alist (cons '("kos"
+                            (c-basic-offset . 8)
+                            (c-comment-only-line-offset . 0)
+                            (c-offsets-alist . ((statement-block-intro . +)
+                                                (substatement-open . 0)
+                                                (label . 0)
+                                                (statement-cont . +)
+                                                (case-label . +)
+                                                )))
+                          c-style-alist))

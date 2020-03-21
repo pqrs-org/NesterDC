@@ -1,0 +1,14 @@
+OBJS = 
+SUBDIRS = dreamcast nes 
+LIBS = 
+
+include $(NESTER_BASE)/Makefile.prefab
+
+all: subdirs 
+	true
+
+clean: clean_subdirs
+	-rm -f $(NESTER_OBJ)/*.o 
+
+force: 
+

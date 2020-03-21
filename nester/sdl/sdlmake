@@ -1,0 +1,42 @@
+#!/bin/sh
+
+#============================================================
+# Edit for your environment
+NESTER_BASE="/home/tekezo/work/src/nesterdc/nester"
+SDL_CONFIG=sdl11-config 
+
+NESTER_OPTIONS="${NESTER_OPTIONS} -D__UNIX__"
+#NESTER_OPTIONS="${NESTER_OPTIONS} -D__SDL_DEBUG__"
+
+NESTER_CFLAGS="-O2 -g -fno-exceptions"
+NESTER_CFLAGS="${NESTER_CFLAGS} -Winline"
+#NESTER_CFLAGS="-O3 -pg -fno-exceptions"
+#NESTER_CFLAGS="-O3 -fomit-frame-pointer -fno-exceptions"
+
+NESTER_LFLAGS="-lbz2" 
+
+#------------------------------------------------------------
+# for Nester
+export NESTER_BASE
+export NESTER_OBJ="${NESTER_BASE}/obj-sdl"
+export NESTER_CC="gcc"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/debug"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes/ppu"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes/apu"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes/cpu"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes/libsnss"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes/mapper"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/nes/ppu"
+NESTER_INCS="${NESTER_INCS} -I${NESTER_BASE}/sdl"
+SDL_CFLAGS="$(${SDL_CONFIG} --cflags)"
+export NESTER_CFLAGS="${NESTER_CFLAGS} ${NESTER_INCS} ${NESTER_OPTIONS} ${SDL_CFLAGS}"
+export NESTER_CCPLUS="g++"
+export NESTER_CXXFLAGS="${NESTER_CFLAGS} -fno-operator-names -fno-rtti"
+export NESTER_LFLAGS="${NESTER_LFLAGS} $(${SDL_CONFIG} --libs)"
+
+#------------------------------------------------------------
+cd ${NESTER_BASE} && gmake -f Makefile.sdl "$@"
+#echo $NESTER_INCS
+

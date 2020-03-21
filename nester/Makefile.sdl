@@ -1,0 +1,17 @@
+OBJS = 
+SUBDIRS = sdl nes 
+LIBS = 
+
+include $(NESTER_BASE)/Makefile.prefab
+
+all: subdirs force
+	$(NESTER_CCPLUS) $(NESTER_CXXFLAGS) -o $(NESTER_OBJ)/nester.elf $(NESTER_OBJ)/*.o $(NESTER_LFLAGS)
+
+clean: clean_subdirs
+	-rm -f $(NESTER_OBJ)/*.o $(NESTER_OBJ)/nester.elf
+
+test: nester.elf
+	$(NESTER_OBJ)/nester.elf $(NESTER_BASE)/test.nes
+
+force: 
+

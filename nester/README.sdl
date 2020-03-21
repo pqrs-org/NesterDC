@@ -1,0 +1,59 @@
+#========================================
+requires
+
+ * SDL 
+ * opening window with 320x240 16bpp.
+ * sound support (need to adjust speed)
+
+
+#========================================
+keymap 
+
+ ESC: exit
+ p: pause
+ SPACE: speed up
+ r + LSHIFT: reset
+
+ h: LEFT
+ j: DOWN
+ k: UP
+ l: RIGHT
+ s: B
+ f: A
+ ;: SELECT
+ ': START
+
+ 1: set disk side to 1A (for fds)
+ 2: set disk side to 1B (for fds)
+ 3: set disk side to 1C (for fds)
+ 4: set disk side to 1D (for fds)
+ 5: state save
+ 7: state load
+
+ (see sdl/sdl_main.cpp for detail)
+
+
+#========================================
+develop environment
+
+develop:
+ FreeBSD 4-stable + SDL-1.2.3
+
+** NOTE **
+ "NesterDC for SDL" won't work on Windows. 
+
+
+#========================================
+How to compile 
+
+ - edit sdl/sdlmake
+ - edit types.h
+ - type 
+     $ sh sdl/sdlmake clean all
+ - execute obj-sdl/nester.elf 
+
+
+#========================================
+contact: Takayama Fumihiko <tekezo@catv296.ne.jp>
+         http://nemesis.kaz.ac/~fumihit/nesterdc/
+(if you want mail reply, don't use hotmail.com. I can't mail for hotmail.)

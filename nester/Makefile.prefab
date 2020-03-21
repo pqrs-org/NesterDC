@@ -1,0 +1,23 @@
+all: $(OBJS) subdirs
+	-cp $(OBJS) $(NESTER_OBJ)
+
+clean: clean_subdirs
+	-rm -f $(OBJS) *.bck
+
+%.o: %.c
+	$(NESTER_CC) $(NESTER_CFLAGS) -c $< -o $@
+
+%.o: %.cpp
+	$(NESTER_CCPLUS) $(NESTER_CXXFLAGS) -c $< -o $@
+
+subdirs: $(patsubst %, _dir_%, $(SUBDIRS))
+
+$(patsubst %, _dir_%, $(SUBDIRS)):
+	$(MAKE) -C $(patsubst _dir_%, %, $@)
+
+clean_subdirs: $(patsubst %, _clean_dir_%, $(SUBDIRS))
+
+$(patsubst %, _clean_dir_%, $(SUBDIRS)):
+	$(MAKE) -C $(patsubst _clean_dir_%, %, $@) clean
+
+

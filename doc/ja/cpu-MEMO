@@ -1,0 +1,58 @@
+婁醒卞匙繡允月 macro
+↘ PUSH(value)
+↘ SCATTER_FLAGS(value)
+↘ SET_NZ_FLAGS(value)
+↘ RELATIVE_BRANCH(condition)
+↘ JUMP(address)
+↘ ADC(cycles, read_func) #0, #1
+↘ ANC(cycles, read_func) #0, #1
+↘ AND(cycles, read_func) #0, #1
+↘ ANE(cycles, read_func) #0, #1
+↘ ARR(cycles, read_func) #0, #1
+↘ ASL(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ ASR(cycles, read_func) #0, #1
+↘ BIT(cycles, read_func) #0, #1
+↘ _COMPARE(reg, value) #0, #1
+↘ CMP(cycles, read_func) #0, #1
+↘ CPX(cycles, read_func) #0, #1
+↘ CPY(cycles, read_func) #0, #1
+↘ DCP(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ DEC(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ DOP(cycles)
+↘ EOR(cycles, read_func) #0, #1
+↘ INC(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ ISB(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ LAS(cycles, read_func) #0, #1
+↘ LAX(cycles, read_func) #0, #1
+↘ LDA(cycles, read_func) #0, #1
+↘ LDX(cycles, read_func) #0, #1
+↘ LDY(cycles, read_func) #0, #1
+↘ LSR(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ LXA(cycles, read_func) #0, #1
+↘ ORA(cycles, read_func) #0, #1
+↘ RLA(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ ROL(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ ROR(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ RRA(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ SAX(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ SBC(cycles, read_func) #0, #1
+↘ SBX(cycles, read_func) #0, #1
+↘ SHA(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ SHS(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ SHX(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ SHY(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ SLO(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ SRE(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ STA(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ STX(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+↘ STY(cycles, read_func, write_func, addr) #0, #1, #2  (addr 反匙繡六內)
+
+
+
+婁醒卞匙繡仄卅中 macro
+↘ ABS*: 婁醒踏晶煙
+↘ ZERO_*: 婁醒踏晶煙
+↘ ZP_*: 婁醒踏晶煙
+↘ INDIR_*: 婁醒踏晶煙
+
+
